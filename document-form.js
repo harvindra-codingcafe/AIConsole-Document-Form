@@ -78,29 +78,6 @@ function DocumentForm() {
                 Tell the AI to give you the answer in the above language.
               </small>
             </div>
-            <div className="form-group mb-3">
-              <label className="ms-2 mt-2">Folder</label>
-              <select
-                id="type"
-                name="type"
-                class="form-control selectpicker_doc"
-              >
-                <option id="None">None</option>
-
-                <option id="Summarize">Project</option>
-
-                <option id="Quote generator">Project1</option>
-
-                <option id="Test Template">Project2</option>
-
-                <option id="Explain">Private Project</option>
-
-                <option id="Song lyrics">Project3</option>
-
-                <option id="Joke generator">Project4</option>
-              </select>
-              <small>A folder will help you categorize your resources.</small>
-            </div>
             <button
               onClick={toggleAdvancedSettings}
               className="btn btn-secondary w-100"
@@ -200,13 +177,22 @@ function DocumentForm() {
                     </div>
                   </div>
                 </div>
-                <div className="form-group mb-3">
-                  <label>Maximum words per variant</label>
+                <div class="input-group">
                   <input
-                    type="text"
-                    placeholder="words available this month"
-                    className="form-control"
+                    type="number"
+                    min="1"
+                    max=""
+                    id="max_words_per_variant"
+                    name="max_words_per_variant"
+                    class="form-control"
+                    value=""
                   />
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      {" "}
+                      words available this month
+                    </span>
+                  </div>
                 </div>
               </>
             )}
