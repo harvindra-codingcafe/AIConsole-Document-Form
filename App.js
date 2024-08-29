@@ -5,12 +5,9 @@ import DocumentPreview from "./component/document-preview";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<DocumentForm />} />
-        <Route path="/document-preview" element={<DocumentPreview />} />
-      </Routes>
-    </Router>
+    <div className="App">
+    <DocumentPreview />
+  </div>
   );
 }
 

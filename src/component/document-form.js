@@ -10,7 +10,7 @@ const DocumentForm = () => {
   const [documentData, setDocumentData] = useState({});
   const [documentInputs, setDocumentInputs] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState("");
   const [content, setContent] = useState();
   const [allData, setAllData] = useState();
@@ -31,7 +31,7 @@ const DocumentForm = () => {
     variants: "1",
     availableWords: "",
   });
-  const [submittedData, setSubmittedData] = useState(null);
+  const [setSubmittedData] = useState(null);
 
   const toggleAdvancedSettings = (event) => {
     setAdvancedVisible(!isAdvancedVisible);
@@ -42,7 +42,7 @@ const DocumentForm = () => {
     setLoader(true);
     axios
       .get(
-        `${config.web_url}/api/template-embedding/get-template-data?token=${config.token}`
+        `${config?.web_url}/api/template-embedding/get-template-data?token=${config?.token}`
       )
       .then(function (res) {
         if (res.data) {
@@ -84,11 +84,11 @@ const DocumentForm = () => {
       );
     }
     newLoad.append("available_words", formData.availableWords);
-    newLoad.append("token", `${config.token}`);
+    newLoad.append("token", `${config?.token}`);
 
     axios
       .post(
-        `${config.web_url}/api/template-embedding/create-document`,
+        `${config?.web_url}/api/template-embedding/create-document`,
         newLoad,
         {
           headers: {
@@ -119,7 +119,7 @@ const DocumentForm = () => {
   const filledDocument = (id) => {
     axios
       .get(
-        `${config.web_url}/api/template-embedding/get-document/${id}?token=${config.token}`
+        `${config?.web_url}/api/template-embedding/get-document/${id}?token=${config?.token}`
       )
       .then((res) => {
         if (res.data && !res.data.errors) {
