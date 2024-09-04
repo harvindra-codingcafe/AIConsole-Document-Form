@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
+import "../component/documentform.css";
 var config;
 
 const DocumentForm = () => {
@@ -10,7 +10,7 @@ const DocumentForm = () => {
   const [documentData, setDocumentData] = useState({});
   const [documentInputs, setDocumentInputs] = useState([]);
   const [error, setError] = useState(null);
-  const [setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [copySuccess, setCopySuccess] = useState("");
   const [content, setContent] = useState();
   const [allData, setAllData] = useState();
@@ -31,7 +31,7 @@ const DocumentForm = () => {
     variants: "1",
     availableWords: "",
   });
-  const [setSubmittedData] = useState(null);
+  const [submittedData, setSubmittedData] = useState(null);
 
   const toggleAdvancedSettings = (event) => {
     setAdvancedVisible(!isAdvancedVisible);
@@ -112,7 +112,7 @@ const DocumentForm = () => {
       });
   };
   useEffect(() => {
-    config = window.chatbaseConfig;
+    config = window.aiDocumentConfig;
     newForm();
   }, []);
 
@@ -193,10 +193,9 @@ const DocumentForm = () => {
   return (
     <>
       {responseId !== "" ? (
-        <div className="container">
-          <h1>Your AI Document</h1>
-          <div className="card">
-            <div className="card-body">
+        <div className="container1">
+          <div className="headcard">
+            <div className="newcardbody">
               <div id="quill_container">
                 <label>Content</label>
                 <ReactQuill
@@ -208,7 +207,7 @@ const DocumentForm = () => {
                 />
                 <button
                   onClick={handleCopyToClipboard}
-                  className="btn btn-block btn-outline-primary w-100 mt-2"
+                  className="btn2 w-100 mt-2"
                 >
                   <i className="fa-solid fa-copy"></i>
                   Copy to Clipboard
@@ -216,7 +215,10 @@ const DocumentForm = () => {
                 {copySuccess && (
                   <div
                     className="bg-secondary text-white p-1 mt-1 rounded mx-auto"
-                    style={{ maxWidth: "300px", textAlign: "center" }}
+                    style={{
+                      maxWidth: "300px",
+                      textAlign: "center",
+                    }}
                   >
                     {copySuccess}
                   </div>
@@ -224,10 +226,10 @@ const DocumentForm = () => {
               </div>
               <label>Type</label>
               <div
-                className="card border-0"
+                className="headcard border-0"
                 style={{ background: "#f0fdfa", color: "#14b8a6" }}
               >
-                <div className="card-body d-flex align-items-center justify-content-between">
+                <div className="newcardbody d-flex align-items-center justify-content-between">
                   <div className="">
                     <i className={icons}></i>
                     <content>{allData}</content>
@@ -236,8 +238,14 @@ const DocumentForm = () => {
                     className="btn btn-sm btn-outline-secondary"
                     onClick={handleGenerateWorksheet}
                   >
-                    <i className="fa fa-plus-circle" aria-hidden="true"></i>
-                    Generate AI Worksheet
+                    <div className="">
+                      <i
+                        className="fa fa-plus-circle"
+                        style={{ marginRight: "5px" }}
+                        aria-hidden="true"
+                      ></i>
+                      Generate AI Worksheet
+                    </div>
                   </button>
                 </div>
               </div>
@@ -254,14 +262,14 @@ const DocumentForm = () => {
                     "available_words",
                     "type",
                   ].includes(key) && (
-                    <div className="form-group mb-3" key={index}>
+                    <div className="formbottom" key={index}>
                       <label>
                         {icon && <i className={icon + " input-icon"}></i>}
                         {key.replace(`${documentData.templateId}_`, "")}
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className="actcont"
                         value={value}
                         disabled
                       />
@@ -270,18 +278,18 @@ const DocumentForm = () => {
                 );
               })}
 
-              <div className="form-group mb-3">
+              <div className="formbottom">
                 <label>Language</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="actcont"
                   value={documentData.language}
                   disabled
                 />
               </div>
               <div className="row">
                 <div className="col-12 col-lg-6">
-                  <div className="form-group mb-3">
+                  <div className="formbottom">
                     <label>Creativity Level</label>
                     <div className="row btn-group-toggle" data-toggle="buttons">
                       {[
@@ -352,11 +360,11 @@ const DocumentForm = () => {
                   </div>
                 </div>
               </div>
-              <div className="form-group">
+              <div className="">
                 <label>Maximum words per variant</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="actcont"
                   value={documentData.max_words_per_variant}
                   disabled
                 />
@@ -365,13 +373,12 @@ const DocumentForm = () => {
           </div>
         </div>
       ) : (
-        <div className="container">
-          <h1>Create AI Document</h1>
+        <div className="container1">
           {/* <i className="fa fa-user"></i> */}
-          <div className="card">
-            <div className="card-body">
+          <div className="headcard">
+            <div className="newcardbody">
               <form onSubmit={handleFormSubmit}>
-                <div className="form-group mb-3">
+                <div className="formbottom">
                   {loader ? (
                     <div className="spinner-border text-center" role="status">
                       <span className="visually-hidden">Loading...</span>
@@ -379,13 +386,13 @@ const DocumentForm = () => {
                   ) : (
                     <>
                       {Object.values(newInputs).map((input, index) => (
-                        <div key={index} className="form-group mb-3">
+                        <div key={index} className="formbottom">
                           {input.icon && <i className={input.icon}></i>}
                           <label className="ms-2 mt-2">{input.label}</label>
                           {input.type === "text" && (
                             <input
                               type="text"
-                              className="form-control"
+                              className="actcont"
                               placeholder={input.placeholder}
                               onChange={handleInputChange}
                               value={formData[input.key] || ""}
@@ -395,7 +402,7 @@ const DocumentForm = () => {
                           )}
                           {input.type === "textarea" && (
                             <textarea
-                              className="form-control"
+                              className="actcont"
                               placeholder={input.placeholder}
                               onChange={handleInputChange}
                               value={formData[input.key] || ""}
@@ -411,12 +418,12 @@ const DocumentForm = () => {
                     </>
                   )}
                 </div>
-                <div className="form-group mb-3">
+                <div className="formbottom">
                   <label className="ms-2">Language</label>
                   <select
                     id="language"
                     name="language"
-                    className="form-control custom-select"
+                    className="actcont custom-select"
                     onChange={handleInputChange}
                     value={formData.language}
                   >
@@ -430,20 +437,14 @@ const DocumentForm = () => {
                     Tell the AI to give you the answer in the above language.
                   </small>
                 </div>
-                <button
-                  onClick={toggleAdvancedSettings}
-                  className="btn btn-secondary w-100"
-                >
+                <button onClick={toggleAdvancedSettings} className="Advancebtn">
                   Advanced settings
                 </button>
                 {isAdvancedVisible && (
                   <>
-                    <div className="form-group mb-3">
+                    <div className="formbottom">
                       <label>Creativity level</label>
-                      <div
-                        className="row btn-group-toggle"
-                        data-toggle="buttons"
-                      >
+                      <div className="optinal" data-toggle="buttons">
                         {[
                           "none",
                           "low",
@@ -452,9 +453,9 @@ const DocumentForm = () => {
                           "maximum",
                           "custom",
                         ].map((level) => (
-                          <div className="col-12 col-lg-4" key={level}>
+                          <div className="optional" key={level}>
                             <label
-                              className={`btn btn-light btn-block w-100 ${
+                              className={`btn3 mb-2 ${
                                 formData.creativity_level === level
                                   ? "active"
                                   : ""
@@ -485,18 +486,18 @@ const DocumentForm = () => {
                           max="2"
                           step="0.01"
                           onChange={handleInputChange}
-                          className="form-control"
+                          className="actcont"
                           placeholder=""
                         />
                       </div>
                     )}
-                    <div className="form-group variant-block mb-2">
+                    <div className="mb-2">
                       <label>Variants</label>
-                      <div className="row btn-group-toggle">
+                      <div className="optinal">
                         {[1, 2, 3].map((variant) => (
-                          <div className="col-12 col-lg-4" key={variant}>
+                          <div className="optional" key={variant}>
                             <label
-                              className={`btn btn-light btn-block w-100 ${
+                              className={`btn3 ${
                                 formData.variants === variant.toString()
                                   ? "active"
                                   : ""
@@ -518,20 +519,20 @@ const DocumentForm = () => {
                         ))}
                       </div>
                     </div>
-                    <div className="form-group">
+                    <div className="">
                       <label>Maximum words per variant</label>
-                      <div className="input-group">
+                      <div className="inpgrp">
                         <input
                           type="number"
                           min="1"
                           max={avail_words}
                           id="availableWords"
                           name="availableWords"
-                          className="form-control"
+                          className="actcont"
                           onChange={handleInputChange}
                         />
                         <div className="input-group-append">
-                          <span className="input-group-text">
+                          <span className="availableword">
                             {avail_words} words available this month
                           </span>
                         </div>
@@ -540,7 +541,7 @@ const DocumentForm = () => {
                   </>
                 )}
                 <button
-                  className="btn btn-primary mt-2 mb-2 w-100"
+                  className="btn4 mt-2 mb-2 w-100"
                   type="submit"
                   disabled={isSubmitting}
                 >
