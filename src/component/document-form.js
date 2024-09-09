@@ -3,6 +3,7 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../component/documentform.css";
+import { type } from "@testing-library/user-event/dist/type";
 var config;
 
 const DocumentForm = () => {
@@ -32,6 +33,7 @@ const DocumentForm = () => {
     availableWords: "",
   });
   const [submittedData, setSubmittedData] = useState(null);
+  const [response, setResponse] = useState(false);
 
   const toggleAdvancedSettings = (event) => {
     setAdvancedVisible(!isAdvancedVisible);
@@ -50,8 +52,12 @@ const DocumentForm = () => {
           setNewInputs(res.data.data.template.inputs);
           setAvailWords(res.data.data.available_words);
           setTemplateId(res.data.data.template.template_id);
+          setResponse(false);
         } else {
         }
+      })
+      .catch(function (error) {
+        setResponse(true);
       })
       .finally(() => {
         setLoader(false);
@@ -60,6 +66,7 @@ const DocumentForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log("hi", name, value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -207,7 +214,7 @@ const DocumentForm = () => {
                 />
                 <button
                   onClick={handleCopyToClipboard}
-                  className="btn2 w-100 mt-2"
+                  className="btn2 w-100 mt-2 mb-3"
                 >
                   <i className="fa-solid fa-copy"></i>
                   Copy to Clipboard
@@ -229,23 +236,21 @@ const DocumentForm = () => {
                 className="headcard border-0"
                 style={{ background: "#f0fdfa", color: "#14b8a6" }}
               >
-                <div className="newcardbody d-flex align-items-center justify-content-between">
-                  <div className="">
+                <div
+                  className="newcardbody1 d-flex align-items-center justify-content-between"
+                  style={{ backgroundColor: "#f0f9ff", color: "#0ea5e9" }}
+                >
+                  <div className="" style={{ fontSize: "14px" }}>
                     <i className={icons}></i>
                     <content>{allData}</content>
                   </div>
-                  <button
-                    className="btn btn-sm btn-outline-secondary"
-                    onClick={handleGenerateWorksheet}
-                  >
-                    <div className="">
-                      <i
-                        className="fa fa-plus-circle"
-                        style={{ marginRight: "5px" }}
-                        aria-hidden="true"
-                      ></i>
-                      Generate AI Worksheet
-                    </div>
+                  <button className="newbtn5" onClick={handleGenerateWorksheet}>
+                    <i
+                      className="fa fa-plus-circle"
+                      style={{ marginRight: "5px" }}
+                      aria-hidden="true"
+                    ></i>
+                    Generate AI Worksheet
                   </button>
                 </div>
               </div>
@@ -267,12 +272,9 @@ const DocumentForm = () => {
                         {icon && <i className={icon + " input-icon"}></i>}
                         {key.replace(`${documentData.templateId}_`, "")}
                       </label>
-                      <input
-                        type="text"
-                        className="actcont"
-                        value={value}
-                        disabled
-                      />
+                      <div className="headcard  w-100">
+                        <div className="newcardbody newval">{value}</div>
+                      </div>
                     </div>
                   )
                 );
@@ -280,12 +282,9 @@ const DocumentForm = () => {
 
               <div className="formbottom">
                 <label>Language</label>
-                <input
-                  type="text"
-                  className="actcont"
-                  value={documentData.language}
-                  disabled
-                />
+                <div className="newcardbody newval">
+                  {documentData.language}
+                </div>
               </div>
               <div className="row">
                 <div className="col-12 col-lg-6">
@@ -304,23 +303,16 @@ const DocumentForm = () => {
                           documentData.creativity_level === level && (
                             <div className="col-12" key={level}>
                               <label
-                                className={`btn btn-light btn-block w-100 ${
+                                className={`w-100 ${
                                   documentData.creativity_level === level
                                     ? "active"
                                     : ""
                                 }`}
                               >
-                                <input
-                                  type="radio"
-                                  name="creativity_level"
-                                  value={level}
-                                  className="btn-check"
-                                  checked={
-                                    documentData.creativity_level === level
-                                  }
-                                  disabled
-                                />
-                                {level.charAt(0).toUpperCase() + level.slice(1)}
+                                <div className="newcardbody newval">
+                                  {level.charAt(0).toUpperCase() +
+                                    level.slice(1)}
+                                </div>
                               </label>
                             </div>
                           )
@@ -337,21 +329,15 @@ const DocumentForm = () => {
                           documentData.variants === variant && (
                             <div className="col-12" key={variant}>
                               <label
-                                className={`btn btn-light btn-block w-100 ${
+                                className={`w-100 ${
                                   documentData.variants === variant
                                     ? "active"
                                     : ""
                                 }`}
                               >
-                                <input
-                                  type="radio"
-                                  name="variants"
-                                  value={variant}
-                                  className="btn-check"
-                                  checked={documentData.variants === variant}
-                                  disabled
-                                />
-                                {variant} variant{variant > 1 ? "s" : ""}
+                                <div className="newcardbody newval">
+                                  {variant} variant{variant > 1 ? "s" : ""}
+                                </div>
                               </label>
                             </div>
                           )
@@ -360,19 +346,16 @@ const DocumentForm = () => {
                   </div>
                 </div>
               </div>
-              <div className="">
+              <div className="newmaxword">
                 <label>Maximum words per variant</label>
-                <input
-                  type="text"
-                  className="actcont"
-                  value={documentData.max_words_per_variant}
-                  disabled
-                />
+                <div className="newcardbody newval1">
+                  {documentData.max_words_per_variant}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      ) : (
+      ) : !response ? (
         <div className="container1">
           {/* <i className="fa fa-user"></i> */}
           <div className="headcard">
@@ -423,7 +406,7 @@ const DocumentForm = () => {
                   <select
                     id="language"
                     name="language"
-                    className="actcont custom-select"
+                    className="actcont custom-select mb-2"
                     onChange={handleInputChange}
                     value={formData.language}
                   >
@@ -433,9 +416,10 @@ const DocumentForm = () => {
                       </option>
                     ))}
                   </select>
-                  <small>
+                  <small className="mt-2">
                     Tell the AI to give you the answer in the above language.
                   </small>
+                  <i class="fa-solid fa-user-tie"></i>
                 </div>
                 <button onClick={toggleAdvancedSettings} className="Advancebtn">
                   Advanced settings
@@ -443,7 +427,7 @@ const DocumentForm = () => {
                 {isAdvancedVisible && (
                   <>
                     <div className="formbottom">
-                      <label>Creativity level</label>
+                      <label className="">Creativity level</label>
                       <div className="optinal" data-toggle="buttons">
                         {[
                           "none",
@@ -452,9 +436,10 @@ const DocumentForm = () => {
                           "high",
                           "maximum",
                           "custom",
-                        ].map((level) => (
+                        ].map((level, index) => (
                           <div className="optional" key={level}>
                             <label
+                              htmlFor={`${index}__creativity_level`}
                               className={`btn3 mb-2 ${
                                 formData.creativity_level === level
                                   ? "active"
@@ -463,9 +448,10 @@ const DocumentForm = () => {
                             >
                               <input
                                 type="radio"
+                                id={`${index}__creativity_level`}
                                 name="creativity_level"
                                 value={level}
-                                className="btn-check"
+                                className="btncheck"
                                 onChange={handleInputChange}
                                 checked={formData.creativity_level === level}
                               />
@@ -489,14 +475,19 @@ const DocumentForm = () => {
                           className="actcont"
                           placeholder=""
                         />
+                        <small className="mt-1">
+                          0 is the most factual. 2 is the highest amount of
+                          creativity.
+                        </small>
                       </div>
                     )}
                     <div className="mb-2">
                       <label>Variants</label>
                       <div className="optinal">
-                        {[1, 2, 3].map((variant) => (
+                        {[1, 2, 3].map((variant, index) => (
                           <div className="optional" key={variant}>
                             <label
+                              htmlFor={`${index}_variants`}
                               className={`btn3 ${
                                 formData.variants === variant.toString()
                                   ? "active"
@@ -505,9 +496,10 @@ const DocumentForm = () => {
                             >
                               <input
                                 type="radio"
+                                id={`${index}_variants`}
                                 name="variants"
                                 value={variant.toString()}
-                                className="btn-check"
+                                className="btncheck"
                                 onChange={handleInputChange}
                                 checked={
                                   formData.variants === variant.toString()
@@ -556,6 +548,8 @@ const DocumentForm = () => {
             </div>
           </div>
         </div>
+      ) : (
+        ""
       )}
     </>
   );
