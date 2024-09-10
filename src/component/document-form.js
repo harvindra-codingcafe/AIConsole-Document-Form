@@ -439,7 +439,7 @@ const DocumentForm = () => {
                   <>
                     <div className="formbottom">
                       <label className="">Creativity level</label>
-                      <div className="optinal" data-toggle="buttons">
+                      <div className="optinal">
                         {[1, 2, 3, 4, 5, 6].map((level, index) => (
                           <div className="optional" key={level}>
                             <label
@@ -450,22 +450,22 @@ const DocumentForm = () => {
                                   : ""
                               }`}
                             >
-                              <input
-                                type="radio"
-                                id={`${index}__creativity_level`}
-                                name="creativity_level"
-                                value={level}
-                                className="btncheck"
-                                onChange={handleInputChange}
-                                checked={
-                                  formData.creativity_level === level.toString()
-                                }
-                              />
                               {creativityLevelMap[level]
                                 .charAt(0)
                                 .toUpperCase() +
                                 creativityLevelMap[level].slice(1)}
                             </label>
+                            <input
+                              type="radio"
+                              id={`${index}__creativity_level`}
+                              name="creativity_level"
+                              value={level}
+                              className="btncheck"
+                              onChange={handleInputChange}
+                              checked={
+                                formData.creativity_level === level.toString()
+                              }
+                            />
                           </div>
                         ))}
                       </div>
@@ -503,19 +503,17 @@ const DocumentForm = () => {
                                   : ""
                               }`}
                             >
-                              <input
-                                type="radio"
-                                id={`${index}_variants`}
-                                name="variants"
-                                value={variant.toString()}
-                                className="btncheck"
-                                onChange={handleInputChange}
-                                checked={
-                                  formData.variants === variant.toString()
-                                }
-                              />
                               {variant} variant
                             </label>
+                            <input
+                              type="radio"
+                              id={`${index}_variants`}
+                              name="variants"
+                              value={variant.toString()}
+                              className="btncheck"
+                              onChange={handleInputChange}
+                              checked={formData.variants === variant.toString()}
+                            />
                           </div>
                         ))}
                       </div>
