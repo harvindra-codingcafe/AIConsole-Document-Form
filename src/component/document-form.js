@@ -66,9 +66,10 @@ const DocumentForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log("hi", name, value);
     setFormData({ ...formData, [name]: value });
+    console.log("new", formData);
   };
+  console.log("Type", typeof creativity_level);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -505,7 +506,7 @@ const DocumentForm = () => {
                                   formData.variants === variant.toString()
                                 }
                               />
-                              {variant} variant{variant > 1 ? "s" : ""}
+                              {variant} variant
                             </label>
                           </div>
                         ))}
