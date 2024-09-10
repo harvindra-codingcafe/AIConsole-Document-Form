@@ -27,13 +27,21 @@ const DocumentForm = () => {
   const [formData, setFormData] = useState({
     type: "",
     language: "",
-    creativity_level: "optimal",
+    creativity_level: "3",
     custom_creativity_level: "",
     variants: "1",
     availableWords: "",
   });
   const [submittedData, setSubmittedData] = useState(null);
   const [response, setResponse] = useState(false);
+  const creativityLevelMap = {
+    1: "none",
+    2: "low",
+    3: "optimal",
+    4: "high",
+    5: "maximum",
+    6: "custom",
+  };
 
   const toggleAdvancedSettings = (event) => {
     setAdvancedVisible(!isAdvancedVisible);
@@ -67,9 +75,7 @@ const DocumentForm = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    console.log("new", formData);
   };
-  console.log("Type", typeof creativity_level);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -84,8 +90,12 @@ const DocumentForm = () => {
     });
     newLoad.append("language", formData.language);
     newLoad.append("variants", formData.variants);
-    newLoad.append("creativity_level", formData.creativity_level);
-    if (formData.creativity_level === "custom") {
+    const selectedCreativityLevel =
+      creativityLevelMap[formData.creativity_level];
+
+    newLoad.append("creativity_level", selectedCreativityLevel);
+
+    if (selectedCreativityLevel === "custom") {
       newLoad.append(
         "custom_creativity_level",
         formData.custom_creativity_level || ""
@@ -430,19 +440,12 @@ const DocumentForm = () => {
                     <div className="formbottom">
                       <label className="">Creativity level</label>
                       <div className="optinal" data-toggle="buttons">
-                        {[
-                          "none",
-                          "low",
-                          "optimal",
-                          "high",
-                          "maximum",
-                          "custom",
-                        ].map((level, index) => (
+                        {[1, 2, 3, 4, 5, 6].map((level, index) => (
                           <div className="optional" key={level}>
                             <label
                               htmlFor={`${index}__creativity_level`}
                               className={`btn3 mb-2 ${
-                                formData.creativity_level === level
+                                formData.creativity_level === level.toString()
                                   ? "active"
                                   : ""
                               }`}
@@ -454,15 +457,20 @@ const DocumentForm = () => {
                                 value={level}
                                 className="btncheck"
                                 onChange={handleInputChange}
-                                checked={formData.creativity_level === level}
+                                checked={
+                                  formData.creativity_level === level.toString()
+                                }
                               />
-                              {level.charAt(0).toUpperCase() + level.slice(1)}
+                              {creativityLevelMap[level]
+                                .charAt(0)
+                                .toUpperCase() +
+                                creativityLevelMap[level].slice(1)}
                             </label>
                           </div>
                         ))}
                       </div>
                     </div>
-                    {formData.creativity_level === "custom" && (
+                    {formData.creativity_level === "6" && (
                       <div className="mt-3">
                         <label>Custom Creativity Level</label>
                         <input
