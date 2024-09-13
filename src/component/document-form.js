@@ -24,24 +24,20 @@ const DocumentForm = () => {
   const [avail_words, setAvailWords] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loader2, setLoader2] = useState(false);
+  const [translationData, setTranslationData] = useState({
+    translations: {},
+  });
   const [formData, setFormData] = useState({
     type: "",
     language: "",
-    creativity_level: "3",
+    creativity_level: "optimal",
     custom_creativity_level: "",
     variants: "1",
     availableWords: "",
   });
   const [submittedData, setSubmittedData] = useState(null);
   const [response, setResponse] = useState(false);
-  const creativityLevelMap = {
-    1: "none",
-    2: "low",
-    3: "optimal",
-    4: "high",
-    5: "maximum",
-    6: "custom",
-  };
+  const [creativityNewLevel, setCreativityNewLevel] = useState({});
 
   const toggleAdvancedSettings = (event) => {
     setAdvancedVisible(!isAdvancedVisible);
@@ -60,6 +56,11 @@ const DocumentForm = () => {
           setNewInputs(res.data.data.template.inputs);
           setAvailWords(res.data.data.available_words);
           setTemplateId(res.data.data.template.template_id);
+          setTranslationData(res.data.data.translations);
+          const creativityLevels = res.data.data.translations.creativity_levels;
+          // Convert object to an array of key-value pairs
+          const creativityLevelsArray = Object.entries(creativityLevels);
+          setCreativityNewLevel(creativityLevelsArray);
           setResponse(false);
         } else {
         }
@@ -90,12 +91,8 @@ const DocumentForm = () => {
     });
     newLoad.append("language", formData.language);
     newLoad.append("variants", formData.variants);
-    const selectedCreativityLevel =
-      creativityLevelMap[formData.creativity_level];
-
-    newLoad.append("creativity_level", selectedCreativityLevel);
-
-    if (selectedCreativityLevel === "custom") {
+    newLoad.append("creativity_level", formData.creativity_level);
+    if (formData.creativity_level === "custom") {
       newLoad.append(
         "custom_creativity_level",
         formData.custom_creativity_level || ""
@@ -215,7 +212,7 @@ const DocumentForm = () => {
           <div className="headcard">
             <div className="newcardbody">
               <div id="quill_container">
-                <label>Content</label>
+                <label>{translationData?.content || "Content"}</label>
                 <ReactQuill
                   theme="snow"
                   value={content}
@@ -228,7 +225,7 @@ const DocumentForm = () => {
                   className="btn2 w-100 mt-2 mb-3"
                 >
                   <i className="fa-solid fa-copy"></i>
-                  Copy to Clipboard
+                  {translationData.copy_to_clipboard}
                 </button>
                 {copySuccess && (
                   <div
@@ -242,7 +239,7 @@ const DocumentForm = () => {
                   </div>
                 )}
               </div>
-              <label>Type</label>
+              <label>{translationData?.type || "Type"}</label>
               <div
                 className="headcard border-0"
                 style={{ background: "#f0fdfa", color: "#14b8a6" }}
@@ -261,7 +258,7 @@ const DocumentForm = () => {
                       style={{ marginRight: "5px" }}
                       aria-hidden="true"
                     ></i>
-                    Generate AI Worksheet
+                    {translationData.generate_document}
                   </button>
                 </div>
               </div>
@@ -292,7 +289,7 @@ const DocumentForm = () => {
               })}
 
               <div className="formbottom">
-                <label>Language</label>
+                <label>{translationData?.language || "Language"}</label>
                 <div className="newcardbody newval">
                   {documentData.language}
                 </div>
@@ -300,40 +297,39 @@ const DocumentForm = () => {
               <div className="row">
                 <div className="col-12 col-lg-6">
                   <div className="formbottom">
-                    <label>Creativity Level</label>
+                    <label>
+                      {translationData?.creativity_level || "Creativity level"}
+                    </label>
                     <div className="row btn-group-toggle" data-toggle="buttons">
-                      {[
-                        "none",
-                        "low",
-                        "optimal",
-                        "high",
-                        "maximum",
-                        "custom",
-                      ].map(
-                        (level) =>
-                          documentData.creativity_level === level && (
-                            <div className="col-12" key={level}>
+                      {creativityNewLevel.map(([key, value]) => {
+                        const displayValue =
+                          typeof value === "string" ? value : String(value);
+
+                        return (
+                          documentData.creativity_level === key && (
+                            <div className="col-12" key={key}>
                               <label
                                 className={`w-100 ${
-                                  documentData.creativity_level === level
+                                  documentData.creativity_level === key
                                     ? "active"
                                     : ""
                                 }`}
                               >
                                 <div className="newcardbody newval">
-                                  {level.charAt(0).toUpperCase() +
-                                    level.slice(1)}
+                                  {displayValue.charAt(0).toUpperCase() +
+                                    displayValue.slice(1)}
                                 </div>
                               </label>
                             </div>
                           )
-                      )}
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
                 <div className="col-12 col-lg-6">
                   <div className="form-group variant-block mb-2">
-                    <label>Variants</label>
+                    <label>{translationData?.variant || "Variant"}</label>
                     <div className="row btn-group-toggle">
                       {[1, 2, 3].map(
                         (variant) =>
@@ -347,7 +343,8 @@ const DocumentForm = () => {
                                 }`}
                               >
                                 <div className="newcardbody newval">
-                                  {variant} variant{variant > 1 ? "s" : ""}
+                                  {variant}{" "}
+                                  {translationData?.variants || "variants"}
                                 </div>
                               </label>
                             </div>
@@ -358,7 +355,10 @@ const DocumentForm = () => {
                 </div>
               </div>
               <div className="newmaxword">
-                <label>Maximum words per variant</label>
+                <label>
+                  {translationData?.max_words_per_variant ||
+                    "Maximum words per variant"}
+                </label>
                 <div className="newcardbody newval1">
                   {documentData.max_words_per_variant}
                 </div>
@@ -413,7 +413,9 @@ const DocumentForm = () => {
                   )}
                 </div>
                 <div className="formbottom">
-                  <label className="ms-2">Language</label>
+                  <label className="ms-2">
+                    {translationData?.language || "Language"}
+                  </label>
                   <select
                     id="language"
                     name="language"
@@ -428,51 +430,58 @@ const DocumentForm = () => {
                     ))}
                   </select>
                   <small className="mt-2">
-                    Tell the AI to give you the answer in the above language.
+                    {translationData.language_help}
                   </small>
                   <i class="fa-solid fa-user-tie"></i>
                 </div>
                 <button onClick={toggleAdvancedSettings} className="Advancebtn">
-                  Advanced settings
+                  {translationData.advanced_setting}
                 </button>
                 {isAdvancedVisible && (
                   <>
                     <div className="formbottom">
-                      <label className="">Creativity level</label>
+                      <label className="">
+                        {translationData?.creativity_level ||
+                          "Creativity level"}
+                      </label>
                       <div className="optinal">
-                        {[1, 2, 3, 4, 5, 6].map((level, index) => (
-                          <div className="optional" key={level}>
-                            <label
-                              htmlFor={`${index}__creativity_level`}
-                              className={`btn3 mb-2 ${
-                                formData.creativity_level === level.toString()
-                                  ? "active"
-                                  : ""
-                              }`}
-                            >
-                              {creativityLevelMap[level]
-                                .charAt(0)
-                                .toUpperCase() +
-                                creativityLevelMap[level].slice(1)}
-                            </label>
-                            <input
-                              type="radio"
-                              id={`${index}__creativity_level`}
-                              name="creativity_level"
-                              value={level}
-                              className="btncheck"
-                              onChange={handleInputChange}
-                              checked={
-                                formData.creativity_level === level.toString()
-                              }
-                            />
-                          </div>
-                        ))}
+                        {creativityNewLevel.map(([key, value]) => {
+                          const displayValue =
+                            typeof value === "string" ? value : String(value);
+
+                          return (
+                            <div className="optional" key={key}>
+                              <label
+                                htmlFor={`${key}__creativity_level`}
+                                className={`btn3 mb-2 ${
+                                  formData.creativity_level === key
+                                    ? "active"
+                                    : ""
+                                }`}
+                              >
+                                {displayValue.charAt(0).toUpperCase() +
+                                  displayValue.slice(1)}
+                              </label>
+                              <input
+                                type="radio"
+                                id={`${key}__creativity_level`}
+                                name="creativity_level"
+                                value={key}
+                                className="btncheck"
+                                onChange={handleInputChange}
+                                checked={formData.creativity_level === key}
+                              />
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
-                    {formData.creativity_level === "6" && (
+                    {formData.creativity_level === "custom" && (
                       <div className="mt-3">
-                        <label>Custom Creativity Level</label>
+                        <label>
+                          {translationData?.custom_creativity ||
+                            "Creativity level"}
+                        </label>
                         <input
                           type="number"
                           name="custom_creativity_level"
@@ -485,13 +494,13 @@ const DocumentForm = () => {
                           placeholder=""
                         />
                         <small className="mt-1">
-                          0 is the most factual. 2 is the highest amount of
-                          creativity.
+                          {translationData.custom_creativity_help ||
+                            "0 is the most factual. 2 is the highest amount of creativity."}
                         </small>
                       </div>
                     )}
                     <div className="mb-2">
-                      <label>Variants</label>
+                      <label>{translationData?.variant || "Variant"}</label>
                       <div className="optinal">
                         {[1, 2, 3].map((variant, index) => (
                           <div className="optional" key={variant}>
@@ -503,7 +512,8 @@ const DocumentForm = () => {
                                   : ""
                               }`}
                             >
-                              {variant} variant
+                              {variant}{" "}
+                              {translationData?.variants || "variants"}
                             </label>
                             <input
                               type="radio"
@@ -519,7 +529,10 @@ const DocumentForm = () => {
                       </div>
                     </div>
                     <div className="">
-                      <label>Maximum words per variant</label>
+                      <label>
+                        {translationData?.max_words_per_variant ||
+                          "Maximum words per variant"}
+                      </label>
                       <div className="inpgrp">
                         <input
                           type="number"
@@ -532,7 +545,8 @@ const DocumentForm = () => {
                         />
                         <div className="input-group-append">
                           <span className="availableword">
-                            {avail_words} words available this month
+                            {translationData?.words_available_this_month ||
+                              "words available this month"}
                           </span>
                         </div>
                       </div>
@@ -549,7 +563,7 @@ const DocumentForm = () => {
                       <span className="visually-hidden">Loading...</span>
                     </div>
                   )}
-                  {!loader2 && "Create"}
+                  {!loader2 && (translationData?.create || "Create")}
                 </button>
               </form>
             </div>
