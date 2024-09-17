@@ -3,7 +3,6 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../component/documentform.css";
-import { type } from "@testing-library/user-event/dist/type";
 var config;
 
 const DocumentForm = () => {
@@ -38,7 +37,10 @@ const DocumentForm = () => {
   const [submittedData, setSubmittedData] = useState(null);
   const [response, setResponse] = useState(false);
   const [creativityNewLevel, setCreativityNewLevel] = useState({});
-
+  const [variantid, setVariantId] = useState([]);
+  const [newVariants, setNewVariats] = useState();
+  const [newData, setNewData] = useState();
+  const [activeVariantId, setActiveVariantId] = useState("");
   const toggleAdvancedSettings = (event) => {
     setAdvancedVisible(!isAdvancedVisible);
     event.preventDefault();
@@ -143,6 +145,11 @@ const DocumentForm = () => {
           setContent(res.data.data.content);
           setAllData(res.data.data.template_name);
           setIcons(res.data.data.template_icon);
+          setActiveVariantId(res.data.data.document_id);
+          setVariantId(res.data.data.variant_ids);
+          setNewVariats(res.data.data.settings.variants);
+          setNewData(res.data.data);
+          console.log("Hi", res.data.data.variant_ids[0]);
         } else {
           setError(res.data.data.errors.title);
         }
@@ -154,7 +161,8 @@ const DocumentForm = () => {
         setLoading(false);
       });
   };
-  const handleGenerateWorksheet = () => {
+  const handleGenerateWorksheet = (event) => {
+    event.preventDefault();
     setResponseId("");
   };
 
@@ -205,6 +213,11 @@ const DocumentForm = () => {
       [{ indent: "-1" }, { indent: "+1" }],
     ],
   };
+  const handleVariantClick = (variantId) => {
+    setActiveVariantId(variantId);
+    filledDocument(variantId);
+  };
+
   return (
     <>
       {responseId !== "" ? (
@@ -239,6 +252,35 @@ const DocumentForm = () => {
                   </div>
                 )}
               </div>
+              <div className="mt-4">
+                {" "}
+                <i class="fa fa-list-ol" aria-hidden="true"></i>
+                <label className="ms-2">Variants ({newVariants})</label>
+                <div className=" d-flex justify-content-between  w-25 mt-2">
+                  {variantid
+                    .map((variant, index) => ({ variant, index })) // Pair variants with their original index
+                    .filter(({ variant }) => variant !== activeVariantId) // Exclude the selected variant
+                    .map(({ variant, index }) => (
+                      <div key={variant} className="d-flex align-item-center">
+                        <div className="mb-3">
+                          <i className="fas fa-file-alt"></i>{" "}
+                        </div>
+
+                        <p
+                          className="text-primary ms-2"
+                          onClick={() => handleVariantClick(variant)}
+                          style={{
+                            cursor: "pointer",
+                            color: "blue",
+                          }}
+                        >
+                          {newData.template_name} {variant} - v{index + 1}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+              </div>
+
               <label>{translationData?.type || "Type"}</label>
               <div
                 className="headcard border-0"

@@ -1,4 +1,4 @@
- .container1{
+#aidocumentform .container1{
     width: 100% !important;
     padding-right: calc(1.5* .5) !important;
     padding-left: calc(0* .5) !important;
@@ -6,7 +6,7 @@
     margin-left: auto !important;
 }
 @media (min-width: 576px) {
-    .container1{
+    #aidocumentform .container1{
     max-width: 540px !important;
     padding-right: calc(1.5* .5) !important;
     padding-left: calc(0* .5) !important;
@@ -15,7 +15,7 @@
     }
 }
 @media (min-width: 768px) {
-    .container1{
+    #aidocumentform .container1{
     max-width: 720px !important;
     padding-right: calc(1.5* .5) !important;
     padding-left: calc(0* .5) !important;
@@ -24,7 +24,7 @@
     }
 }
 @media (min-width: 992px) {
-    .container1{
+    #aidocumentform .container1{
     max-width: 960px !important;
     padding-right: calc(1.5* .5) !important;
     padding-left: calc(0* .5) !important;
@@ -33,7 +33,7 @@
     }
 }
 @media (min-width: 1200px) {
-    .container1{
+    #aidocumentform .container1{
     max-width: 1140px !important;
     padding-right: calc(1.5* .5) !important;
     padding-left: calc(0* .5) !important;
@@ -42,7 +42,7 @@
     }
 }
 @media (min-width: 1400px) {
-    .container1{
+    #aidocumentform .container1{
     max-width: 1320px !important;
     padding-right: calc(1.5* .5) !important;
     padding-left: calc(0* .5) !important;
@@ -50,7 +50,7 @@
     margin-left: auto !important;
     }
 }
-.headcard{
+#aidocumentform .headcard{
     position: relative !important; 
     display: flex !important;
     flex-direction: column !important;
@@ -61,27 +61,27 @@
     border: 1px solid #f3f4f6 !important;
     border-radius: .3rem !important;
 }
-.newcardbody{
+#aidocumentform .newcardbody{
     flex: 1 1 auto !important;
     min-height: 1px !important;
     padding: 1.5rem !important;
 }
-.newcardbody1{
+#aidocumentform .newcardbody1{
     flex: 1 1 auto !important;
     min-height: 71px !important;
     padding: 1.5rem !important;
 }
-.newval{
+#aidocumentform .newval{
     background-color: #f3f4f6 !important;
     font-size: 16px !important;
     border-radius: 4px !important;
 }
-.newval1{
+#aidocumentform .newval1{
     background-color: #f3f4f6 !important;
     font-size: 16px !important;
     border-radius: 4px !important;
 }
-button{
+#aidocumentform button{
     appearance: auto !important;
     text-rendering: auto !important;
     color: buttontext !important;
@@ -105,7 +105,7 @@ button{
     border-color: buttonborder !important;
     border-image: initial !important;
 }
-.Advancebtn {
+#aidocumentform .Advancebtn {
 
     display: inline-block !important;
     padding: 7px 12px !important;
@@ -127,17 +127,17 @@ button{
     margin: 24px 0 !important;
 }
 
-.formbottom{
+#aidocumentform .formbottom{
     margin-bottom: 1rem !important;
 }
-.inplab{
+#aidocumentform .inplab{
     display: inline-block;
 }
-.margst{
+#aidocumentform .margst{
     margin-top: .5rem !important;
     margin-left: .5rem !important;
 }
-.formbottom small{
+#aidocumentform .formbottom small{
     display: block;
 }
 
@@ -149,7 +149,7 @@ button{
  #aidocumentform small{
     font-size: 13px !important;
  }
- .newbtn5{
+ #aidocumentform .newbtn5{
     color: #4B5563 !important;
     background-color: transparent !important;
     padding: 4px 8px !important;
@@ -159,11 +159,15 @@ button{
     border-radius: 4px !important;
     font-size: 13px !important
  }
- .ql-toolbar span button {
+ #aidocumentform .ql-toolbar span button {
     background: transparent !important;
     border: none !important;
 }
-.btn2{
+#aidocumentform .quill {
+    margin-bottom: 23px !important;
+}
+
+#aidocumentform .btn2{
     display: inline-block !important;
     padding: 7.2px 12px !important;
     font-size: 16px !important;
@@ -180,18 +184,18 @@ button{
     text-transform: none !important;
     background-color: #fff !important;
 }
-.btn2:hover {
+#aidocumentform .btn2:hover {
     color: #fff !important;
     background-color: #0d6efd !important;
     border-color: #0d6efd !important;
 }
-.btn2:active{
+#aidocumentform .btn2:active{
     color: #fff !important;
     background-color: #0d6efd !important;
     border-color: #0d6efd !important;
 }
 
-.availableword{
+#aidocumentform .availableword{
     align-items: center !important;
     /* background-color: #f8f9fa; */
     background-color: #f8f9fa !important;
@@ -210,7 +214,7 @@ button{
     white-space: nowrap !important;
     border-collapse: separate !important;
 }
-.optinal{
+#aidocumentform .optinal{
 
     display: flex !important;
     flex-wrap: wrap !important;
@@ -218,18 +222,18 @@ button{
     margin-right: calc(-.5* 1.5rem) !important;
     margin-left: 0 !important;
 }
-.optional {
+#aidocumentform .optional {
     flex: 0 0 auto !important;
     width: 33.33333333% !important;
 }
 
 @media screen and (max-width: 991px) {
-    .optional {
+    #aidocumentform .optional {
         flex: 0 0 auto !important;
         width: 100% !important;
     }
 }
-.btn3{
+#aidocumentform .btn3{
     width: 95% !important;
     display: inline-block;
     padding: 7.2px 12px  !important;
@@ -251,12 +255,12 @@ button{
 
 }
 
-.btn3.active{
+#aidocumentform .btn3.active{
     color:#000 !important;
     background-color: #c6c7c8 !important;
     border-color: #babbbc !important;
 }
-.actcont{
+#aidocumentform .actcont{
     display: block !important;
     width: 100% !important;
     padding: 7.2px 12px !important;
@@ -271,19 +275,19 @@ button{
     border-radius: 0.375rem !important;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
-.inpgrp{
+#aidocumentform .inpgrp{
     display: flex !important;
     align-items: stretch !important;
     width: 100% !important;
 }
 @media screen and (max-width: 767px) {
-    .inpgrp{
+    #aidocumentform .inpgrp{
         display: flex !important;
         flex-direction: column !important;
         width: 100% !important;
     }
 }
-.btn4{
+#aidocumentform .btn4{
     display: inline-block !important;
     padding: 7.2px 12px !important;
     font-size: 15px !important;
@@ -301,19 +305,23 @@ button{
     background-color: #0d6efd !important;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
-.btn4:active{
+#aidocumentform .btn4:active{
     color: #fff !important;
     background-color: #0a58ca !important;
     border-color: #0a53be !important;
 }
 
-.btncheck{
+#aidocumentform .btncheck{
     position: absolute !important;
     clip: rect(0, 0, 0, 0) !important;
     pointer-events: none !important;
 }
-.newmaxword{
+#aidocumentform .newmaxword{
     display: flex;
     flex-direction: column;
 
+}
+
+.iconsfile i{
+    color: #4b5563 !important;;
 }
