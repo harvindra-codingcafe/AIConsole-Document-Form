@@ -175,6 +175,7 @@
     line-height: 1.5 !important;
     text-align: center !important;
     text-decoration: none !important;
+    color: #0a58ca !important;
     vertical-align: middle !important;
     user-select: none !important;
     border: 1px solid #0d6efd !important;
@@ -183,11 +184,13 @@
     -webkit-appearance: button !important;
     text-transform: none !important;
     background-color: #fff !important;
+    cursor: pointer !important;
 }
 #aidocumentform .btn2:hover {
     color: #fff !important;
     background-color: #0d6efd !important;
     border-color: #0d6efd !important;
+    cursor: pointer !important;
 }
 #aidocumentform .btn2:active{
     color: #fff !important;

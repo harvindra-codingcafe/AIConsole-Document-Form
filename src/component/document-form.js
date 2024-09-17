@@ -225,6 +225,8 @@ const DocumentForm = () => {
           <div className="headcard">
             <div className="newcardbody">
               <div id="quill_container">
+                <i class="fas fa-robot"></i>
+                {"  "}
                 <label>{translationData?.content || "Content"}</label>
                 <ReactQuill
                   theme="snow"
@@ -237,8 +239,8 @@ const DocumentForm = () => {
                   onClick={handleCopyToClipboard}
                   className="btn2 w-100 mt-2 mb-3"
                 >
-                  <i className="fa-solid fa-copy"></i>
-                  {translationData.copy_to_clipboard}
+                  <i class="fa fa-copy"></i>{" "}
+                  {translationData.copy_to_clipboard || "Copy to clipboard"}
                 </button>
                 {copySuccess && (
                   <div
@@ -280,7 +282,8 @@ const DocumentForm = () => {
                     ))}
                 </div>
               </div>
-
+              <i class="fa fa-tasks"></i>
+              {"  "}
               <label>{translationData?.type || "Type"}</label>
               <div
                 className="headcard border-0"
@@ -319,7 +322,8 @@ const DocumentForm = () => {
                   ].includes(key) && (
                     <div className="formbottom" key={index}>
                       <label>
-                        {icon && <i className={icon + " input-icon"}></i>}
+                        {icon && <i className={icon + " input-icon"}></i>}{" "}
+                        {"  "}
                         {key.replace(`${documentData.templateId}_`, "")}
                       </label>
                       <div className="headcard  w-100">
@@ -331,6 +335,8 @@ const DocumentForm = () => {
               })}
 
               <div className="formbottom">
+                <i class="fa fa-language"></i>
+                {"  "}
                 <label>{translationData?.language || "Language"}</label>
                 <div className="newcardbody newval">
                   {documentData.language}
@@ -339,6 +345,8 @@ const DocumentForm = () => {
               <div className="row">
                 <div className="col-12 col-lg-6">
                   <div className="formbottom">
+                    <i class="fa fa-lightbulb-o"></i>
+                    {"  "}
                     <label>
                       {translationData?.creativity_level || "Creativity level"}
                     </label>
@@ -371,6 +379,8 @@ const DocumentForm = () => {
                 </div>
                 <div className="col-12 col-lg-6">
                   <div className="form-group variant-block mb-2">
+                    <i class="fa fa-list-ol"></i>
+                    {"  "}
                     <label>{translationData?.variant || "Variant"}</label>
                     <div className="row btn-group-toggle">
                       {[1, 2, 3].map(
