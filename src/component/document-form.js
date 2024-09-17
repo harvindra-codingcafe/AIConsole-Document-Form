@@ -149,7 +149,6 @@ const DocumentForm = () => {
           setVariantId(res.data.data.variant_ids);
           setNewVariats(res.data.data.settings.variants);
           setNewData(res.data.data);
-          console.log("Hi", res.data.data.variant_ids[0]);
         } else {
           setError(res.data.data.errors.title);
         }
@@ -282,29 +281,34 @@ const DocumentForm = () => {
                     ))}
                 </div>
               </div>
-              <i class="fa fa-tasks"></i>
-              {"  "}
-              <label>{translationData?.type || "Type"}</label>
-              <div
-                className="headcard border-0"
-                style={{ background: "#f0fdfa", color: "#14b8a6" }}
-              >
+              <div className="formbottom">
+                <i class="fa fa-tasks"></i>
+                {"  "}
+                <label>{translationData?.type || "Type"}</label>
                 <div
-                  className="newcardbody1 d-flex align-items-center justify-content-between"
-                  style={{ backgroundColor: "#f0f9ff", color: "#0ea5e9" }}
+                  className="headcard border-0"
+                  style={{ background: "#f0fdfa", color: "#14b8a6" }}
                 >
-                  <div className="" style={{ fontSize: "14px" }}>
-                    <i className={icons}></i>
-                    <content>{allData}</content>
+                  <div
+                    className="newcardbody1 d-flex align-items-center justify-content-between"
+                    style={{ backgroundColor: "#f0f9ff", color: "#0ea5e9" }}
+                  >
+                    <div className="" style={{ fontSize: "14px" }}>
+                      <i className={icons}></i>
+                      <content>{allData}</content>
+                    </div>
+                    <button
+                      className="newbtn5"
+                      onClick={handleGenerateWorksheet}
+                    >
+                      <i
+                        className="fa fa-plus-circle"
+                        style={{ marginRight: "5px" }}
+                        aria-hidden="true"
+                      ></i>
+                      {translationData.generate_document}
+                    </button>
                   </div>
-                  <button className="newbtn5" onClick={handleGenerateWorksheet}>
-                    <i
-                      className="fa fa-plus-circle"
-                      style={{ marginRight: "5px" }}
-                      aria-hidden="true"
-                    ></i>
-                    {translationData.generate_document}
-                  </button>
                 </div>
               </div>
               {documentInputs.map((input, index) => {
@@ -466,6 +470,8 @@ const DocumentForm = () => {
                 </div>
                 <div className="formbottom">
                   <label className="ms-2">
+                    <i class="fa fa-language"></i>
+                    {"  "}
                     {translationData?.language || "Language"}
                   </label>
                   <select
@@ -492,6 +498,8 @@ const DocumentForm = () => {
                 {isAdvancedVisible && (
                   <>
                     <div className="formbottom">
+                      <i class="fa fa-lightbulb-o"></i>
+                      {"  "}
                       <label className="">
                         {translationData?.creativity_level ||
                           "Creativity level"}
@@ -530,6 +538,8 @@ const DocumentForm = () => {
                     </div>
                     {formData.creativity_level === "custom" && (
                       <div className="mt-3">
+                        <i class="fas fa-hat-wizard"></i>
+                        {"  "}
                         <label>
                           {translationData?.custom_creativity ||
                             "Creativity level"}
@@ -552,6 +562,8 @@ const DocumentForm = () => {
                       </div>
                     )}
                     <div className="mb-2">
+                      <i class="fa fa-list-ol"></i>
+                      {"  "}
                       <label>{translationData?.variant || "Variant"}</label>
                       <div className="optinal">
                         {[1, 2, 3].map((variant, index) => (
