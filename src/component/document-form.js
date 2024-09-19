@@ -163,6 +163,7 @@ const DocumentForm = () => {
   const handleGenerateWorksheet = (event) => {
     event.preventDefault();
     setResponseId("");
+    window.location.reload();
   };
 
   if (error) {
@@ -221,7 +222,7 @@ const DocumentForm = () => {
     <>
       {responseId !== "" ? (
         <div className="container1">
-          <div className="headcard">
+          <div className="2">
             <div className="newcardbody">
               <div className="formbottom">
                 <div id="quill_container">
@@ -238,16 +239,13 @@ const DocumentForm = () => {
                 </div>
               </div>
               <div className="formbottom">
-                <button
-                  onClick={handleCopyToClipboard}
-                  className="btn2 w-100 mt-2 mb-3"
-                >
+                <button onClick={handleCopyToClipboard} className="btn2">
                   <i class="fa fa-copy"></i>{" "}
                   {translationData.copy_to_clipboard || "Copy to clipboard"}
                 </button>
                 {copySuccess && (
                   <div
-                    className="bg-secondary text-white p-1 mt-1 rounded mx-auto"
+                    className="responsecopy"
                     style={{
                       maxWidth: "300px",
                       textAlign: "center",
@@ -262,21 +260,21 @@ const DocumentForm = () => {
                   <span style={{ marginRight: "10px" }}>
                     <i class="fa fa-list-ol" aria-hidden="true"></i>
                   </span>
-                  <label className="ms-2">Variants ({newVariants})</label>
-                  <div className=" d-flex justify-content-between formvariant mt-2">
+                  <label className="variants">Variants ({newVariants})</label>
+                  <div className="formvariant">
                     {variantid
 
                       .map((variant, index) => ({ variant, index }))
                       .filter(({ variant }) => variant !== activeVariantId)
 
                       .map(({ variant, index }) => (
-                        <div key={variant} className="d-flex align-item-center">
-                          <div className="mb-3">
+                        <div key={variant} className="variantform">
+                          <div className="">
                             <i className="fas fa-file-alt"></i>{" "}
                           </div>
 
                           <p
-                            className="text-primary ms-2"
+                            className="variants"
                             onClick={() => handleVariantClick(variant)}
                             style={{
                               cursor: "pointer",
@@ -298,11 +296,11 @@ const DocumentForm = () => {
                 </span>
                 <label>{translationData?.type || "Type"}</label>
                 <div
-                  className="headcard border-0"
+                  className="2 border-0"
                   style={{ background: "#f0fdfa", color: "#14b8a6" }}
                 >
                   <div
-                    className="newcardbody1 d-flex align-items-center justify-content-between"
+                    className="newcardbody1"
                     style={{ backgroundColor: "#f0f9ff", color: "#0ea5e9" }}
                   >
                     <div className="" style={{ fontSize: "16px" }}>
@@ -341,7 +339,7 @@ const DocumentForm = () => {
                         {icon && <i className={icon + " input-icon"}></i>}
                         {key.replace(`${documentData.templateId}_`, "")}
                       </label>
-                      <div className="headcard  w-100">
+                      <div className="headcard">
                         <div className="newcardbody newval">{value}</div>
                       </div>
                     </div>
@@ -358,8 +356,8 @@ const DocumentForm = () => {
                   {documentData.language}
                 </div>
               </div>
-              <div className="row">
-                <div className="col-12 col-lg-6">
+              <div className="newoneside">
+                <div className="newcolums">
                   <div className="formbottom">
                     <span style={{ marginRight: "10px" }}>
                       <i class="fa fa-lightbulb-o"></i>
@@ -367,16 +365,16 @@ const DocumentForm = () => {
                     <label>
                       {translationData?.creativity_level || "Creativity level"}
                     </label>
-                    <div className="row btn-group-toggle" data-toggle="buttons">
+                    <div className="newoneside" data-toggle="buttons">
                       {creativityNewLevel.map(([key, value]) => {
                         const displayValue =
                           typeof value === "string" ? value : String(value);
 
                         return (
                           documentData.creativity_level === key && (
-                            <div className="col-12" key={key}>
+                            <div className="newcolums2" key={key}>
                               <label
-                                className={`w-100 ${
+                                className={`crelevel ${
                                   documentData.creativity_level === key
                                     ? "active"
                                     : ""
@@ -394,19 +392,19 @@ const DocumentForm = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-12 col-lg-6">
-                  <div className="form-group variant-block mb-2">
+                <div className="newcolums">
+                  <div className="formbottom variants">
                     <span style={{ marginRight: "10px" }}>
                       <i class="fa fa-list-ol"></i>
                     </span>
                     <label>{translationData?.variant || "Variant"}</label>
-                    <div className="row btn-group-toggle">
+                    <div className="newoneside ">
                       {[1, 2, 3].map(
                         (variant) =>
                           documentData.variants === variant && (
-                            <div className="col-12" key={variant}>
+                            <div className="newcolums2" key={variant}>
                               <label
-                                className={`w-100 ${
+                                className={`crelevel ${
                                   documentData.variants === variant
                                     ? "active"
                                     : ""
@@ -442,7 +440,7 @@ const DocumentForm = () => {
       ) : !response ? (
         <div className="container1">
           {/* <i className="fa fa-user"></i> */}
-          <div className="headcard">
+          <div className="2">
             <div className="newcardbody">
               <form onSubmit={handleFormSubmit}>
                 <div className="formbottom">
@@ -455,7 +453,7 @@ const DocumentForm = () => {
                       {Object.values(newInputs).map((input, index) => (
                         <div key={index} className="formbottom">
                           {input.icon && <i className={input.icon}></i>}
-                          <label className="ms-2 mt-2">{input.label}</label>
+                          <label className="newone">{input.label}</label>
                           {input.type === "text" && (
                             <input
                               type="text"
@@ -478,7 +476,7 @@ const DocumentForm = () => {
                             ></textarea>
                           )}
                           {input.help && (
-                            <small className="ms-2 mt-2">{input.help}</small>
+                            <small className="newone">{input.help}</small>
                           )}
                         </div>
                       ))}
@@ -495,7 +493,7 @@ const DocumentForm = () => {
                   <select
                     id="language"
                     name="language"
-                    className="actcont custom-select mb-2"
+                    className="actcont2 custom-select lang2"
                     onChange={handleInputChange}
                     value={formData.language}
                   >
@@ -505,7 +503,7 @@ const DocumentForm = () => {
                       </option>
                     ))}
                   </select>
-                  <small className="mt-2">
+                  <small className="langhelp">
                     {translationData.language_help}
                   </small>
                 </div>
@@ -536,7 +534,7 @@ const DocumentForm = () => {
                             <div className="optional" key={key}>
                               <label
                                 htmlFor={`${key}__creativity_level`}
-                                className={`btn3 mb-2 ${
+                                className={`btn3 ${
                                   formData.creativity_level === key
                                     ? "active"
                                     : ""
@@ -581,7 +579,7 @@ const DocumentForm = () => {
                           className="actcont"
                           placeholder=""
                         />
-                        <small className="mt-1">
+                        <small className="newtop">
                           {translationData.custom_creativity_help ||
                             "0 is the most factual. 2 is the highest amount of creativity."}
                         </small>
@@ -648,7 +646,7 @@ const DocumentForm = () => {
                   </>
                 )}
                 <button
-                  className="btn4 mt-2 mb-2 w-100"
+                  className="btn4 langhelp"
                   type="submit"
                   disabled={isSubmitting}
                 >

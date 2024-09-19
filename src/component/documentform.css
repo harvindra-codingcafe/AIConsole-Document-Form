@@ -70,6 +70,9 @@
     flex: 1 1 auto !important;
     min-height: 71px !important;
     padding: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
 }
 #aidocumentform .newval{
     background-color: #f3f4f6 !important;
@@ -148,6 +151,7 @@
     font-size: 15px;
     font-weight: 500;
     margin-bottom: .375rem !important;
+    display: inline-block;
  }
  #aidocumentform small{
     font-size: 13px !important;
@@ -171,6 +175,7 @@
 }
 
 #aidocumentform .btn2{
+    width: 100% !important;
     display: inline-block !important;
     padding: 7.2px 12px !important;
     font-size: 16px !important;
@@ -240,7 +245,7 @@
     }
 }
 #aidocumentform .btn3{
-    width: 95% !important;
+    width: 91% !important;
     display: inline-block;
     padding: 7.2px 12px  !important;
     font-size: 14px  !important;
@@ -268,6 +273,22 @@
 }
 #aidocumentform .actcont{
     display: block !important;
+    width: 98% !important;
+    padding: 7.2px 12px !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #212529 !important;
+    appearance: none !important;
+    background-color: #fff !important;
+    background-clip: padding-box !important;
+    border: 2px solid #dee2e6 !important;
+    border-radius: 0.375rem !important;
+    font-family: inherit !important;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+#aidocumentform .actcont2{
+    display: block !important;
     width: 100% !important;
     padding: 7.2px 12px !important;
     font-size: 16px !important;
@@ -294,6 +315,7 @@
     }
 }
 #aidocumentform .btn4{
+    width: 100% !important;
     display: inline-block !important;
     padding: 7.2px 12px !important;
     font-size: 15px !important;
@@ -333,4 +355,76 @@
 }
 #aidocumentform .formvariant{
     width: 32% !important;
+    display: flex; /* Corresponds to d-flex */
+    justify-content: space-between; /* Corresponds to justify-content-between */
+    margin-top: 0.5rem; 
+}
+#aidocumentform .newone{
+    margin-top: 0.5rem !important;
+    margin-left: 0.5rem !important;
+}
+#aidocumentform .lang2{
+    margin-bottom: 0.5rem !important;
+}
+#aidocumentform .variants{
+    margin-left: 0.5rem !important;
+}
+#aidocumentform .langhelp{
+    margin-top: 0.5rem !important;
+}
+#aidocumentform .newtop{
+    margin-top: 0.25rem !important;
+}
+#aidocumentform .responsecopy {
+    background-color: #6c757d !important;
+    color: white !important; 
+    padding: 0.25rem !important;
+    margin-top: 0.25rem !important; 
+    border-radius: 0.25rem !important;
+    display: block !important;
+    margin-left: auto !important; 
+    margin-right: auto !important;
+}
+#aidocumentform .newiconvar{
+    margin-bottom: 1rem !important;
+}
+#aidocumentform .variantform{
+    display: flex;
+    align-items: center;
+}
+#aidocumentform .headcard2{
+    width: 100% !important;
+    position: relative !important; 
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    word-wrap: break-word !important;
+    background-color: #fff !important;
+    background-clip: border-box !important;
+    border: 1px solid #f3f4f6 !important;
+    border-radius: .3rem !important;
+}
+#aidocumentform .newoneside{
+        display: flex !important;
+        flex-wrap: wrap !important;
+        margin-top: 0 !important;
+        margin-right: -0.75rem !important;
+        width: 100% !important;
+}
+#aidocumentform .newcolums{
+    flex: 0 0 auto !important;
+    width: 100% !important;
+}
+@media (min-width: 992px) {
+    #aidocumentform .newcolums {
+        flex: 0 0 auto !important;
+        width: 50% !important;
+    }
+}
+#aidocumentform .newcolums2{
+    flex: 0 0 auto !important;
+    width: 100% !important;
+}
+#aidocumentform .crelevel{
+    width: 100% !important;
 }

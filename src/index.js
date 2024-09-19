@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import "bootstrap/dist/css/bootstrap.min.css";
 // import "https://aiconsole.movingwords.it/themes/default/assets/css/libraries/fontawesome-iconpicker.min.css?v=1200";
 
 const root = ReactDOM.createRoot(document.getElementById("aidocumentform"));
