@@ -223,17 +223,21 @@ const DocumentForm = () => {
         <div className="container1">
           <div className="headcard">
             <div className="newcardbody">
-              <div id="quill_container">
-                <i class="fas fa-robot"></i>
-                {"  "}
-                <label>{translationData?.content || "Content"}</label>
-                <ReactQuill
-                  theme="snow"
-                  value={content}
-                  formats={formats}
-                  modules={modules}
-                  disabled
-                />
+              <div className="formbottom">
+                <div id="quill_container">
+                  <i class="fas fa-robot"></i>
+                  {"  "}
+                  <label>{translationData?.content || "Content"}</label>
+                  <ReactQuill
+                    theme="snow"
+                    value={content}
+                    formats={formats}
+                    modules={modules}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="formbottom">
                 <button
                   onClick={handleCopyToClipboard}
                   className="btn2 w-100 mt-2 mb-3"
@@ -253,37 +257,45 @@ const DocumentForm = () => {
                   </div>
                 )}
               </div>
-              <div className="mt-4">
-                {" "}
-                <i class="fa fa-list-ol" aria-hidden="true"></i>
-                <label className="ms-2">Variants ({newVariants})</label>
-                <div className=" d-flex justify-content-between  w-25 mt-2">
-                  {variantid
-                    .map((variant, index) => ({ variant, index })) // Pair variants with their original index
-                    .filter(({ variant }) => variant !== activeVariantId) // Exclude the selected variant
-                    .map(({ variant, index }) => (
-                      <div key={variant} className="d-flex align-item-center">
-                        <div className="mb-3">
-                          <i className="fas fa-file-alt"></i>{" "}
-                        </div>
+              {variantid.length >= 2 ? (
+                <div className="formbottom">
+                  <span style={{ marginRight: "10px" }}>
+                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                  </span>
+                  <label className="ms-2">Variants ({newVariants})</label>
+                  <div className=" d-flex justify-content-between formvariant mt-2">
+                    {variantid
 
-                        <p
-                          className="text-primary ms-2"
-                          onClick={() => handleVariantClick(variant)}
-                          style={{
-                            cursor: "pointer",
-                            color: "blue",
-                          }}
-                        >
-                          {newData.template_name} {variant} - v{index + 1}
-                        </p>
-                      </div>
-                    ))}
+                      .map((variant, index) => ({ variant, index }))
+                      .filter(({ variant }) => variant !== activeVariantId)
+
+                      .map(({ variant, index }) => (
+                        <div key={variant} className="d-flex align-item-center">
+                          <div className="mb-3">
+                            <i className="fas fa-file-alt"></i>{" "}
+                          </div>
+
+                          <p
+                            className="text-primary ms-2"
+                            onClick={() => handleVariantClick(variant)}
+                            style={{
+                              cursor: "pointer",
+                              color: "blue",
+                            }}
+                          >
+                            {newData.template_name} {variant} - v{index + 1}
+                          </p>
+                        </div>
+                      ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                ""
+              )}
               <div className="formbottom">
-                <i class="fa fa-tasks"></i>
-                {"  "}
+                <span style={{ marginRight: "10px" }}>
+                  <i class="fa fa-tasks"></i>
+                </span>
                 <label>{translationData?.type || "Type"}</label>
                 <div
                   className="headcard border-0"
@@ -293,7 +305,7 @@ const DocumentForm = () => {
                     className="newcardbody1 d-flex align-items-center justify-content-between"
                     style={{ backgroundColor: "#f0f9ff", color: "#0ea5e9" }}
                   >
-                    <div className="" style={{ fontSize: "14px" }}>
+                    <div className="" style={{ fontSize: "16px" }}>
                       <i className={icons}></i>
                       <content>{allData}</content>
                     </div>
@@ -326,8 +338,7 @@ const DocumentForm = () => {
                   ].includes(key) && (
                     <div className="formbottom" key={index}>
                       <label>
-                        {icon && <i className={icon + " input-icon"}></i>}{" "}
-                        {"  "}
+                        {icon && <i className={icon + " input-icon"}></i>}
                         {key.replace(`${documentData.templateId}_`, "")}
                       </label>
                       <div className="headcard  w-100">
@@ -339,8 +350,9 @@ const DocumentForm = () => {
               })}
 
               <div className="formbottom">
-                <i class="fa fa-language"></i>
-                {"  "}
+                <span style={{ marginRight: "10px" }}>
+                  <i class="fa fa-language"></i>
+                </span>
                 <label>{translationData?.language || "Language"}</label>
                 <div className="newcardbody newval">
                   {documentData.language}
@@ -349,8 +361,9 @@ const DocumentForm = () => {
               <div className="row">
                 <div className="col-12 col-lg-6">
                   <div className="formbottom">
-                    <i class="fa fa-lightbulb-o"></i>
-                    {"  "}
+                    <span style={{ marginRight: "10px" }}>
+                      <i class="fa fa-lightbulb-o"></i>
+                    </span>
                     <label>
                       {translationData?.creativity_level || "Creativity level"}
                     </label>
@@ -383,8 +396,9 @@ const DocumentForm = () => {
                 </div>
                 <div className="col-12 col-lg-6">
                   <div className="form-group variant-block mb-2">
-                    <i class="fa fa-list-ol"></i>
-                    {"  "}
+                    <span style={{ marginRight: "10px" }}>
+                      <i class="fa fa-list-ol"></i>
+                    </span>
                     <label>{translationData?.variant || "Variant"}</label>
                     <div className="row btn-group-toggle">
                       {[1, 2, 3].map(
@@ -412,6 +426,9 @@ const DocumentForm = () => {
               </div>
               <div className="newmaxword">
                 <label>
+                  <span style={{ marginRight: "10px" }}>
+                    <i class="fa fa-keyboard" aria-hidden="true"></i>
+                  </span>
                   {translationData?.max_words_per_variant ||
                     "Maximum words per variant"}
                 </label>
@@ -469,9 +486,10 @@ const DocumentForm = () => {
                   )}
                 </div>
                 <div className="formbottom">
-                  <label className="ms-2">
-                    <i class="fa fa-language"></i>
-                    {"  "}
+                  <label className="">
+                    <span style={{ marginRight: "10px" }}>
+                      <i class="fa fa-language"></i>
+                    </span>
                     {translationData?.language || "Language"}
                   </label>
                   <select
@@ -490,16 +508,21 @@ const DocumentForm = () => {
                   <small className="mt-2">
                     {translationData.language_help}
                   </small>
-                  <i class="fa-solid fa-user-tie"></i>
                 </div>
                 <button onClick={toggleAdvancedSettings} className="Advancebtn">
+                  <span style={{ marginRight: "10px" }}>
+                    <i class="fas fa-user-tie"></i>
+                  </span>
                   {translationData.advanced_setting}
                 </button>
                 {isAdvancedVisible && (
                   <>
                     <div className="formbottom">
-                      <i class="fa fa-lightbulb-o"></i>
-                      {"  "}
+                      <span style={{ marginRight: "10px" }}>
+                        {" "}
+                        <i class="fa fa-lightbulb" aria-hidden="true"></i>
+                      </span>
+
                       <label className="">
                         {translationData?.creativity_level ||
                           "Creativity level"}
@@ -537,9 +560,12 @@ const DocumentForm = () => {
                       </div>
                     </div>
                     {formData.creativity_level === "custom" && (
-                      <div className="mt-3">
-                        <i class="fas fa-hat-wizard"></i>
-                        {"  "}
+                      <div className="formbottom">
+                        <span style={{ marginRight: "10px" }}>
+                          <span style={{ marginRight: "10px" }}>
+                            <i class="fas fa-hat-wizard"></i>
+                          </span>
+                        </span>
                         <label>
                           {translationData?.custom_creativity ||
                             "Creativity level"}
@@ -561,9 +587,10 @@ const DocumentForm = () => {
                         </small>
                       </div>
                     )}
-                    <div className="mb-2">
-                      <i class="fa fa-list-ol"></i>
-                      {"  "}
+                    <div className="formbottom">
+                      <span style={{ marginRight: "10px" }}>
+                        <i class="fa fa-list-ol"></i>
+                      </span>
                       <label>{translationData?.variant || "Variant"}</label>
                       <div className="optinal">
                         {[1, 2, 3].map((variant, index) => (
@@ -592,7 +619,10 @@ const DocumentForm = () => {
                         ))}
                       </div>
                     </div>
-                    <div className="">
+                    <div className="formbottom">
+                      <span style={{ marginRight: "10px" }}>
+                        <i class="fa fa-keyboard" aria-hidden="true"></i>
+                      </span>
                       <label>
                         {translationData?.max_words_per_variant ||
                           "Maximum words per variant"}
