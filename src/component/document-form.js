@@ -78,7 +78,7 @@ const DocumentForm = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target || {};
     setFormData({ ...formData, [name]: value });
   };
 
@@ -245,7 +245,7 @@ const DocumentForm = () => {
             <div className="newcardbody">
               <div className="formbottom">
                 <div id="quill_container">
-                  <i class="fas fa-robot"></i>
+                  <i className="fas fa-robot"></i>
                   {"  "}
                   <label>{translationData?.content || "Content"}</label>
                   <ReactQuill
@@ -260,7 +260,7 @@ const DocumentForm = () => {
               </div>
               <div className="formbottom">
                 <button onClick={handleCopyToClipboard} className="btn2">
-                  <i class="fa fa-copy"></i>{" "}
+                  <i className="fa fa-copy"></i>{" "}
                   {translationData.copy_to_clipboard || "Copy to clipboard"}
                 </button>
                 {copySuccess && (
@@ -278,7 +278,7 @@ const DocumentForm = () => {
               {variantid.length >= 2 ? (
                 <div className="formbottom">
                   <span style={{ marginRight: "10px" }}>
-                    <i class="fa fa-list-ol" aria-hidden="true"></i>
+                    <i className="fa fa-list-ol" aria-hidden="true"></i>
                   </span>
                   <label className="variants">Variants ({newVariants})</label>
                   <div className="formvariant">
@@ -312,7 +312,7 @@ const DocumentForm = () => {
               )}
               <div className="formbottom">
                 <span style={{ marginRight: "10px" }}>
-                  <i class="fa fa-tasks"></i>
+                  <i className="fa fa-tasks"></i>
                 </span>
                 <label>{translationData?.type || "Type"}</label>
                 <div
@@ -360,7 +360,13 @@ const DocumentForm = () => {
                         {key.replace(`${documentData.templateId}_`, "")}
                       </label>
                       <div className="headcard">
-                        <div className="newcardbody newval">{value}</div>
+                        <div className="newcardbody newval">
+                          {/<[a-z][\s\S]*>/i.test(value) ? (
+                            <div dangerouslySetInnerHTML={{ __html: value }} />
+                          ) : (
+                            value
+                          )}
+                        </div>
                       </div>
                     </div>
                   )
@@ -369,7 +375,7 @@ const DocumentForm = () => {
 
               <div className="formbottom">
                 <span style={{ marginRight: "10px" }}>
-                  <i class="fa fa-language"></i>
+                  <i className="fa fa-language"></i>
                 </span>
                 <label>{translationData?.language || "Language"}</label>
                 <div className="newcardbody newval">
@@ -380,7 +386,7 @@ const DocumentForm = () => {
                 <div className="newcolums">
                   <div className="formbottom">
                     <span style={{ marginRight: "10px" }}>
-                      <i class="fa fa-lightbulb-o"></i>
+                      <i className="fa fa-lightbulb-o"></i>
                     </span>
                     <label>
                       {translationData?.creativity_level || "Creativity level"}
@@ -415,7 +421,7 @@ const DocumentForm = () => {
                 <div className="newcolums">
                   <div className="formbottom variants">
                     <span style={{ marginRight: "10px" }}>
-                      <i class="fa fa-list-ol"></i>
+                      <i className="fa fa-list-ol"></i>
                     </span>
                     <label>{translationData?.variant || "Variant"}</label>
                     <div className="newoneside ">
@@ -495,6 +501,23 @@ const DocumentForm = () => {
                               required
                             ></textarea>
                           )}
+                          {input.type === "content_area" && (
+                            <div id="quill_container">
+                              <ReactQuill
+                                theme="snow"
+                                className="actcont"
+                                placeholder={input.placeholder}
+                                onChange={(value) =>
+                                  handleInputChange({
+                                    target: { name: input.key, value },
+                                  })
+                                }
+                                value={formData[input.key] || ""}
+                                name={input.key}
+                                required
+                              />
+                            </div>
+                          )}
                           {input.help && (
                             <small className="newone">{input.help}</small>
                           )}
@@ -506,7 +529,7 @@ const DocumentForm = () => {
                 <div className="formbottom">
                   <label className="">
                     <span style={{ marginRight: "10px" }}>
-                      <i class="fa fa-language"></i>
+                      <i className="fa fa-language"></i>
                     </span>
                     {translationData?.language || "Language"}
                   </label>
@@ -538,7 +561,7 @@ const DocumentForm = () => {
                     <div className="formbottom">
                       <span style={{ marginRight: "10px" }}>
                         {" "}
-                        <i class="fa fa-lightbulb" aria-hidden="true"></i>
+                        <i className="fa fa-lightbulb" aria-hidden="true"></i>
                       </span>
 
                       <label className="">
@@ -639,7 +662,7 @@ const DocumentForm = () => {
                     </div>
                     <div className="formbottom">
                       <span style={{ marginRight: "10px" }}>
-                        <i class="fa fa-keyboard" aria-hidden="true"></i>
+                        <i className="fa fa-keyboard" aria-hidden="true"></i>
                       </span>
                       <label>
                         {translationData?.max_words_per_variant ||
