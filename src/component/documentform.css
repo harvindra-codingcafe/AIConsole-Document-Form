@@ -428,3 +428,10 @@
 #aidocumentform .crelevel{
     width: 100% !important;
 }
+
+  .ql-editor pre {
+    background: #f4f4f4 !important;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  

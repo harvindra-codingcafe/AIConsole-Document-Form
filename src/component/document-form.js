@@ -3,6 +3,8 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../component/documentform.css";
+import hljs from "highlight.js";
+import "highlight.js/styles/atom-one-dark.css";
 var config;
 
 const DocumentForm = () => {
@@ -133,6 +135,19 @@ const DocumentForm = () => {
     newForm();
   }, []);
 
+  const formatCodeInContent = (content) => {
+    // Use regex to find code sections (assumes code is within backticks or specific markers)
+    const formattedContent = content.replace(
+      /```([a-zA-Z0-9]+)?\n([\s\S]+?)\n```/g,
+      (match, language, code) => {
+        return `<pre><code class="language-${language || "plaintext"}">${
+          hljs.highlightAuto(code).value
+        }</code></pre>`;
+      }
+    );
+    return formattedContent;
+  };
+
   const filledDocument = (id) => {
     axios
       .get(
@@ -142,7 +157,8 @@ const DocumentForm = () => {
         if (res.data && !res.data.errors) {
           setDocumentData(res.data.data.settings);
           setDocumentInputs(res.data.data.inputs);
-          setContent(res.data.data.content);
+          const formattedContent = formatCodeInContent(res.data.data.content);
+          setContent(formattedContent);
           setAllData(res.data.data.template_name);
           setIcons(res.data.data.template_icon);
           setActiveVariantId(res.data.data.document_id);
@@ -200,6 +216,9 @@ const DocumentForm = () => {
     "size",
   ];
   const modules = {
+    syntax: {
+      highlight: (text) => hljs.highlightAuto(text).value,
+    },
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
       ["bold", "italic", "underline", "strike", "blockquote"],
@@ -231,10 +250,11 @@ const DocumentForm = () => {
                   <label>{translationData?.content || "Content"}</label>
                   <ReactQuill
                     theme="snow"
+                    key={content}
                     value={content}
                     formats={formats}
                     modules={modules}
-                    disabled
+                    readOnly
                   />
                 </div>
               </div>
