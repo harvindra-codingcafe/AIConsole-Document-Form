@@ -50,9 +50,15 @@ const DocumentForm = () => {
 
   const newForm = () => {
     setLoader(true);
+    setError("");
+    const urlObject = new URL(window.location.href);
+    const cleanErrorMessage = (message) => {
+      return message.replace(/<[^>]*>/g, ""); // Removes all HTML tags
+    };
     axios
       .get(
-        `${config?.web_url}/api/template-embedding/get-template-data?token=${config?.token}`
+        `${config?.web_url}/api/template-embedding/get-template-data?token=${config?.token}&domain=${urlObject.hostname}`
+        // `${config?.web_url}/api/template-embedding/get-template-data?token=${config?.token}&domain=www.movingwords.it`
       )
       .then(function (res) {
         if (res.data) {
@@ -66,10 +72,15 @@ const DocumentForm = () => {
           const creativityLevelsArray = Object.entries(creativityLevels);
           setCreativityNewLevel(creativityLevelsArray);
           setResponse(false);
-        } else {
         }
       })
-      .catch(function (error) {
+      .catch((error) => {
+        if (error.response?.data?.errors) {
+          const cleanedMessage = cleanErrorMessage(
+            error.response.data.errors[0].title
+          );
+          setError(cleanedMessage);
+        }
         setResponse(true);
       })
       .finally(() => {
@@ -83,9 +94,11 @@ const DocumentForm = () => {
   };
 
   const handleFormSubmit = (e) => {
+    setError("");
     e.preventDefault();
     setIsSubmitting(true);
     setLoader2(true);
+    const urlObject = new URL(window.location.href);
     const newLoad = new FormData();
 
     newLoad.append("type", templateId);
@@ -104,10 +117,13 @@ const DocumentForm = () => {
     }
     newLoad.append("available_words", formData.availableWords);
     newLoad.append("token", `${config?.token}`);
-
+    const cleanErrorMessage = (message) => {
+      return message.replace(/<[^>]*>/g, ""); // Removes all HTML tags
+    };
     axios
       .post(
-        `${config?.web_url}/api/template-embedding/create-document`,
+        `${config?.web_url}/api/template-embedding/create-document?domain=${urlObject.hostname}`,
+        // `${config?.web_url}/api/template-embedding/create-document?domain=www.movingwords.it`,
         newLoad,
         {
           headers: {
@@ -116,14 +132,21 @@ const DocumentForm = () => {
         }
       )
       .then((res) => {
-        if (res.data) {
+        if (res.data.data) {
           setSubmittedData(formData);
           setResponseId(res.data.data.id);
           filledDocument(res.data.data.id);
+        } else {
+          setError(res.data.errors);
         }
       })
       .catch((error) => {
-        console.error("There was an error submitting the form!", error);
+        if (error.response?.data?.errors) {
+          const cleanedMessage = cleanErrorMessage(
+            error.response.data.errors[0].title
+          );
+          setError(cleanedMessage);
+        }
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -136,7 +159,6 @@ const DocumentForm = () => {
   }, []);
 
   const formatCodeInContent = (content) => {
-    // Use regex to find code sections (assumes code is within backticks or specific markers)
     const formattedContent = content.replace(
       /```([a-zA-Z0-9]+)?\n([\s\S]+?)\n```/g,
       (match, language, code) => {
@@ -166,11 +188,8 @@ const DocumentForm = () => {
           setNewVariats(res.data.data.settings.variants);
           setNewData(res.data.data);
         } else {
-          setError(res.data.data.errors.title);
+          setError(res.data.data.errors[0].title);
         }
-      })
-      .catch((err) => {
-        setError("An error occurred while fetching the document.");
       })
       .finally(() => {
         setLoading(false);
@@ -183,7 +202,11 @@ const DocumentForm = () => {
   };
 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div>
+        <p>{error}</p>
+      </div>
+    );
   }
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(content).then(
@@ -221,15 +244,31 @@ const DocumentForm = () => {
     },
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ align: ["right", "center", "justify"] }],
-      [{ direction: "rtl" }, { direction: "" }],
-      [{ color: [] }, { background: [] }],
-      [{ font: [] }],
-      [{ script: "sub" }, { script: "super" }],
+      ["bold", "italic", "underline", "strike"],
       ["blockquote", "code-block"],
       [{ list: "ordered" }, { list: "bullet" }],
       [{ indent: "-1" }, { indent: "+1" }],
+      [{ direction: "rtl" }],
+      [{ align: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      [{ color: [] }, { background: [] }],
+      ["link"],
+      ["clean"],
+    ],
+  };
+  const module = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ direction: "rtl" }],
+      [{ align: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      [{ color: [] }, { background: [] }],
+      ["link"],
+      ["clean"],
     ],
   };
   const handleVariantClick = (variantId) => {
@@ -254,7 +293,7 @@ const DocumentForm = () => {
                     value={content}
                     formats={formats}
                     modules={modules}
-                    readOnly
+                    disabled
                   />
                 </div>
               </div>
@@ -506,12 +545,15 @@ const DocumentForm = () => {
                               <ReactQuill
                                 theme="snow"
                                 className="actcont"
+                                formats={formats}
+                                modules={module}
                                 placeholder={input.placeholder}
                                 onChange={(value) =>
                                   handleInputChange({
                                     target: { name: input.key, value },
                                   })
                                 }
+                                // onChange={handleInputChange}
                                 value={formData[input.key] || ""}
                                 name={input.key}
                                 required
