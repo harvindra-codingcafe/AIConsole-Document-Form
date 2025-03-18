@@ -43,7 +43,7 @@
 }
 @media (min-width: 1400px) {
     #aidocumentform .container1{
-    max-width: 1320px !important;
+    max-width: 100% !important;
     padding-right: calc(1.5* .5) !important;
     padding-left: calc(0* .5) !important;
     margin-right: auto !important;
@@ -428,3 +428,12 @@
 #aidocumentform .crelevel{
     width: 100% !important;
 }
+ p.poweredby {
+    background: transparent;
+    color: black !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    margin: 5px ,0, 0, 0 !important;
+    padding: 10px 0 !important;
+    text-align: center !important;
+  }

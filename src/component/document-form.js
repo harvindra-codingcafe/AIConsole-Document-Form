@@ -25,6 +25,8 @@ const DocumentForm = () => {
   const [avail_words, setAvailWords] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loader2, setLoader2] = useState(false);
+  const [showAds, setShowAds] = useState(false);
+  const [siteName, setSiteName] = useState("");
   const [translationData, setTranslationData] = useState({
     translations: {},
   });
@@ -42,6 +44,7 @@ const DocumentForm = () => {
   const [variantid, setVariantId] = useState([]);
   const [newVariants, setNewVariats] = useState();
   const [newData, setNewData] = useState();
+  const [appname, setAppname] = useState("");
   const [activeVariantId, setActiveVariantId] = useState("");
   const toggleAdvancedSettings = (event) => {
     setAdvancedVisible(!isAdvancedVisible);
@@ -58,7 +61,6 @@ const DocumentForm = () => {
     axios
       .get(
         `${config?.web_url}/api/template-embedding/get-template-data?token=${config?.token}&domain=${urlObject.hostname}`
-        // `${config?.web_url}/api/template-embedding/get-template-data?token=${config?.token}&domain=www.movingwords.it`
       )
       .then(function (res) {
         if (res.data) {
@@ -66,6 +68,9 @@ const DocumentForm = () => {
           setNewInputs(res.data.data.template.inputs);
           setAvailWords(res.data.data.available_words);
           setTemplateId(res.data.data.template.template_id);
+          setShowAds(res.data.data.no_ads);
+          setSiteName(res.data.data.app_name);
+          setAppname(res.data.data.app_domain);
           setTranslationData(res.data.data.translations);
           const creativityLevels = res.data.data.translations.creativity_levels;
           // Convert object to an array of key-value pairs
@@ -123,7 +128,6 @@ const DocumentForm = () => {
     axios
       .post(
         `${config?.web_url}/api/template-embedding/create-document?domain=${urlObject.hostname}`,
-        // `${config?.web_url}/api/template-embedding/create-document?domain=www.movingwords.it`,
         newLoad,
         {
           headers: {
@@ -742,6 +746,35 @@ const DocumentForm = () => {
                   )}
                   {!loader2 && (translationData?.create || "Create")}
                 </button>
+                {!showAds ? (
+                  <p
+                    className="poweredby"
+                    style={{
+                      background: "transparent !important",
+                      color: "Black !important",
+                      fontSize: "13px !important",
+                      fontWeight: "400 !important",
+                      margin: "5px ,0, 0, 0 !important",
+                      padding: "10px 0 !important",
+                      textAlign: "center !important",
+                    }}
+                  >
+                    Powered By{" "}
+                    <a
+                      style={{
+                        color: "Black",
+                        textDecoration: "none",
+                      }}
+                      rel="noreferrer"
+                      target="_blank"
+                      href={appname}
+                    >
+                      <b>{siteName}</b>
+                    </a>
+                  </p>
+                ) : (
+                  ""
+                )}
               </form>
             </div>
           </div>
